@@ -1,5 +1,7 @@
 # docx-mcp
 
+**[Read the wiki](https://github.com/dboles99/docx-mcp/wiki)** for how it works, the evidence, the design decisions and the limits.
+
 A read-only MCP server that lets an AI agent read and search a Word document as it would stand with every tracked change accepted.
 
 **简体中文：** docx-mcp 是一个只读的 MCP 服务器，让 AI 智能体读取和搜索 Word 文档。它返回接受全部修订后的文本，已删除的内容不会被当作正文，文件本身不会被修改。
