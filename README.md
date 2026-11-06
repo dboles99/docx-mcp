@@ -41,7 +41,7 @@ flowchart LR
 Python 3.12 or newer.
 
 ```bash
-git clone <this repository>
+git clone https://github.com/dboles99/docx-mcp.git
 cd docx-mcp
 python -m venv .venv
 .venv/bin/pip install -e ".[dev]"     # Windows: .venv\Scripts\pip
