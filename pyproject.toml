@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "docx-mcp"
+version = "0.1.0"
+description = "A read-only MCP server that lets an agent inspect Word documents without seeing tracked deletions as text."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Daniel Boles" }]
+dependencies = [
+    "lxml>=5.3,<7",
+    "mcp>=2,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.2,<10"]
+
+[project.scripts]
+docx-mcp = "docx_mcp.server:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/docx_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
