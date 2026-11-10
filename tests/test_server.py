@@ -77,6 +77,22 @@ async def call_as_client(tool: str, args: dict):
         return await client.call_tool(tool, args)
 
 
+def test_every_tool_declares_all_four_hints_as_read_only():
+    async def listed():
+        async with Client(server) as client:
+            return (await client.list_tools()).tools
+
+    tools = asyncio.run(listed())
+    assert {tool.name for tool in tools} == ALL_TOOLS
+    for tool in tools:
+        hints = tool.annotations
+        assert hints is not None, f"{tool.name} has no annotations"
+        assert hints.read_only_hint is True, tool.name
+        assert hints.destructive_hint is False, tool.name
+        assert hints.idempotent_hint is True, tool.name
+        assert hints.open_world_hint is False, tool.name
+
+
 def test_a_missing_file_is_an_error_the_agent_can_read(tmp_path: Path):
     result = asyncio.run(
         call_as_client("read_docx_accepted_text", {"path": str(tmp_path / "absent.docx")})

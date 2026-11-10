@@ -14,6 +14,7 @@ from typing import Any
 from lxml import etree
 from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
+from mcp.types import ToolAnnotations
 
 from .docx_tools import (
     check_term_variants,
@@ -25,6 +26,15 @@ from .docx_tools import (
 )
 
 mcp = MCPServer("docx-mcp")
+
+# Every tool opens a local file for reading and returns derived text: it changes
+# nothing, gives the same answer for the same file, and reaches no outside service.
+READ_ONLY = ToolAnnotations(
+    read_only_hint=True,
+    destructive_hint=False,
+    idempotent_hint=True,
+    open_world_hint=False,
+)
 
 
 @contextmanager
@@ -40,7 +50,7 @@ def _reported_errors() -> Iterator[None]:
         raise ToolError(f"{type(exc).__name__}: {exc}") from exc
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def read_docx_accepted_text(
     path: str,
     start: int = 0,
@@ -57,7 +67,7 @@ def read_docx_accepted_text(
         return read_accepted_text(path, start=start, limit=limit, min_length=min_length)
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def find_docx_term(
     path: str,
     pattern: str,
@@ -75,7 +85,7 @@ def find_docx_term(
         return find_term(path, pattern, context_chars=context_chars, flags=flags, limit=limit)
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def check_docx_term_variants(
     path: str,
     terms: list[str],
@@ -90,7 +100,7 @@ def check_docx_term_variants(
         return check_term_variants(path, terms, case_sensitive=case_sensitive)
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def get_docx_structure_stats(path: str) -> dict[str, Any]:
     """Return quick statistics for a DOCX: paragraph and word counts, tracked-change
     paragraph count, comment count and file size.
@@ -99,7 +109,7 @@ def get_docx_structure_stats(path: str) -> dict[str, Any]:
         return get_docx_stats(path)
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def scan_docx_meta_notes(
     path: str,
     patterns: list[str] | None = None,
@@ -113,7 +123,7 @@ def scan_docx_meta_notes(
         return scan_meta_notes(path, patterns=patterns, check_first_n=check_first_n)
 
 
-@mcp.tool()
+@mcp.tool(annotations=READ_ONLY)
 def list_docx_paragraph_range(
     path: str,
     start: int,
