@@ -1,5 +1,7 @@
 # docx-mcp
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/dboles99-docx-mcp-skmghg?v=c7dee7c9631c846351798f1a04706d23)](https://m8ven.ai/mcp/dboles99-docx-mcp-skmghg?s=readme)
+
 **[Read the wiki](https://github.com/dboles99/docx-mcp/wiki)** for how it works, the evidence, the design decisions and the limits.
 
 A read-only MCP server that lets an AI agent read and search a Word document as it would stand with every tracked change accepted.
