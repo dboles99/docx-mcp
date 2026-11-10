@@ -16,3 +16,6 @@ htmlcov/
 # Documents are never committed. Fixtures are built in code by the tests.
 *.docx
 *.doc
+
+# Local agent session checkpoints.
+.anchor/
